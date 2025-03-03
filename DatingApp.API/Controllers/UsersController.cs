@@ -17,10 +17,20 @@ namespace DatingApp.API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{userName}")]
+        [HttpGet("user/{userName}")]
         public async Task<ActionResult<AppUser>> GetUserByUserName(string userName)
         {
             var user = await context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user == null) return NotFound();
+
+            return Ok(user);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<AppUser>> GetUser(int id)
+        {
+            var user = await context.Users.FindAsync(id);
 
             if (user == null) return NotFound();
 
